@@ -1,6 +1,8 @@
+import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.Socket;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -44,7 +46,7 @@ public class PessoasInputStream extends InputStream {
         
     }
 
-    public List<Pessoa> readSystem() throws IOException, ClassNotFoundException {
+    public void readSystem() throws IOException, ClassNotFoundException {
         Scanner sc = new Scanner(this.inputStream);
         List<Pessoa> pessoas = new ArrayList<>();
         System.out.println("Qual a quantidade de pessoas?");
@@ -62,7 +64,24 @@ public class PessoasInputStream extends InputStream {
             pessoas.add(pessoa);
         }
         sc.close();
-        return pessoas;
+        for (Pessoa p : pessoas) {
+            System.out.println(p.toString());
+        }
+    }
+
+    public void readTCP() throws IOException, ClassNotFoundException {
+        DataInputStream data = new DataInputStream(this.inputStream);
+        int quantidadePessoa = data.readInt();
+        System.out.println("Quantidade de pessoas: "+ quantidadePessoa);
+        for (int i=0; i < quantidadePessoa; i+=1){
+            int tamanhoNome = data.readInt();
+            byte[] nomeBytes = data.readNBytes(tamanhoNome);
+            String nome = new String(nomeBytes);
+            String cpf = data.readUTF();
+            int idade = data.readInt();
+            Pessoa pessoa = new Pessoa(nome, cpf, idade);
+            System.out.println(pessoa.toString());
+        }
     }
 
     public void close() throws IOException {
@@ -71,23 +90,23 @@ public class PessoasInputStream extends InputStream {
 
     public static void main(String[] args) {
         try {
-            List<Pessoa> pessoas = new ArrayList<>();
-            // Input via Terminal
+            // Input via Terminal - ITEM B
             // PessoasInputStream pessoasInputStreamSys = new PessoasInputStream(System.in);
-            // pessoas = pessoasInputStreamSys.readSystem();
-            // for (Pessoa p : pessoas) {
-            // System.out.println(p.toString());
-            // }
+            // pessoasInputStreamSys.readSystem();
             // pessoasInputStreamSys.close();
 
-            // Input via File
-            InputStream fileInputStream = new FileInputStream("dados_pessoas.dat");
-            PessoasInputStream pessoasInputStreamFile = new PessoasInputStream(fileInputStream); // objeto de leitura
-
-            pessoasInputStreamFile.readFIle();
-            pessoasInputStreamFile.close();
-
-            
+            // Input via File - ITEM C
+            // InputStream fileInputStream = new FileInputStream("dados_pessoas.dat");
+            // PessoasInputStream pessoasInputStreamFile = new PessoasInputStream(fileInputStream); // objeto de leitura
+            // pessoasInputStreamFile.readFIle();
+            // pessoasInputStreamFile.close();
+             
+            //Input servidor-cliente TCP - ITEM D
+            Socket cliente = new Socket("localhost", 12345);
+            PessoasInputStream pessoasInputStreamTCP = new PessoasInputStream(cliente.getInputStream()) ;
+            pessoasInputStreamTCP.readTCP();
+            cliente.close();
+            pessoasInputStreamTCP.close();
 
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();

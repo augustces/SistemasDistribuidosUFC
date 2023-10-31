@@ -115,19 +115,19 @@ public class PessoasOutputStream extends OutputStream {
             Pessoa pessoa2 = new Pessoa("Maria", "987654321", 25);
             Pessoa[] pessoas = {pessoa1, pessoa2};
 
-            // // Imprimir pessoas via terminal
-            PessoasOutputStream pessoaOutputStreamSys = new PessoasOutputStream(pessoas, System.out);
-            pessoaOutputStreamSys.writeSystem();
-            pessoaOutputStreamSys.close();
+            // // Imprimir pessoas via terminal - ITEM D
+            // PessoasOutputStream pessoaOutputStreamSys = new PessoasOutputStream(pessoas, System.out);
+            // pessoaOutputStreamSys.writeSystem();
+            // pessoaOutputStreamSys.close();
 
-            // // Imprimir pessoas com File de destino
-            File arquivo = new File("dados_pessoas.dat");
-            FileOutputStream fileOutputStream = new FileOutputStream(arquivo);
-            PessoasOutputStream pessoasOutputStreamFile = new PessoasOutputStream(pessoas, fileOutputStream);
-            pessoasOutputStreamFile.writeFile(fileOutputStream);
-            pessoasOutputStreamFile.close();
+            // // Imprimir pessoas com File de destino - ITEM E
+            // File arquivo = new File("dados_pessoas.dat");
+            // FileOutputStream fileOutputStream = new FileOutputStream(arquivo);
+            // PessoasOutputStream pessoasOutputStreamFile = new PessoasOutputStream(pessoas, fileOutputStream);
+            // pessoasOutputStreamFile.writeFile(fileOutputStream);
+            // pessoasOutputStreamFile.close();
            
-            // Imprimir pessoas via servidor remoto TCP 
+            // Imprimir pessoas via servidor remoto TCP - ITEM F 
             String servidorRemoto = "172.25.250.237";
             int porta = 12345;
             Socket socket = new Socket(servidorRemoto, porta); 
