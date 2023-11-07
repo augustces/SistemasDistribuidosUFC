@@ -128,7 +128,7 @@ public class PessoasOutputStream extends OutputStream {
             // pessoasOutputStreamFile.close();
            
             // Imprimir pessoas via servidor remoto TCP - ITEM F 
-            String servidorRemoto = "172.25.250.237";
+            String servidorRemoto = "localhost";
             int porta = 12345;
             Socket socket = new Socket(servidorRemoto, porta); 
             PessoasOutputStream pessoasOutputStream = new PessoasOutputStream(pessoas, socket.getOutputStream());
